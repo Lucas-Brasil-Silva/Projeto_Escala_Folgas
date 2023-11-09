@@ -1,0 +1,11 @@
+Olá, tudo bem...
+Vamos seguir com as instruções 
+
+Primeiramente, você poder alterar os valores de mês e dia, para valores que o interessam, clicando na seta para baixo do lado de cada campo e escolhendo um valor. Caso não seja informado novos valores a escala será gerada com base nos valores predefinidos.
+
+Em seguida, você poder:
+- Adicionar um novo funcionário, informando o nome e clicando em Adicionar.
+- Remover funcionário, informando o nome e clicando em Remover.
+- Visualizar todos os funcionários registrados, clicando em Visualizar.
+
+Finalmente, você poder gerar a escala de folgas no formato de arquivo Excel. Detalhe esse campo é obrigatório, sendo assim clique em Save As.… e defina o nome e local onde o arquivo será salvo em seguida clique em gerar escala.
