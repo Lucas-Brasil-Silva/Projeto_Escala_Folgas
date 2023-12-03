@@ -1,5 +1,5 @@
 from openpyxl import Workbook, load_workbook
-from openpyxl.styles import Alignment, PatternFill, Border, Side
+from openpyxl.styles import Alignment, PatternFill, Border, Side, Font
 from openpyxl.cell.text import InlineFont
 from openpyxl.cell.rich_text import TextBlock, CellRichText
 from calendar import monthcalendar
@@ -7,9 +7,10 @@ from datetime import datetime
 from os import linesep
 
 class Planilha:
-    GREEN = InlineFont(color='00008000')
-    BLACK = InlineFont(color='00000000')
-    BLUE = InlineFont(color='000000FF')
+    GREEN = '00008000'
+    BLUE = '000000FF'
+    CARAMEL = Font(color='A08708').color.rgb
+    RED = Font(color='D92525').color.rgb
 
     def __init__(self,tabela,mes=None):
         """
@@ -44,13 +45,11 @@ class Planilha:
         sheet['A1'] = 'Legênda:'
         sheet['A1'].alignment = Alignment(horizontal='center')
         sheet['A1'].border = Border(left=Side(style='thin'),right=Side(style='thin'),top=Side(style='thin'),bottom=Side(style='thin'))
-        legendas = ['Folgas','HomeOffice']
-        cores  = ['00008000','000000FF']
-        for id,i in enumerate(range(2,4)):
+        legendas = ['Folgas','HomeOffice','Plantão HomeOffice','Plantão Presencial']
+        cores  = [self.GREEN,self.BLUE,self.CARAMEL,self.RED]
+        for id,i in enumerate(range(2,6)):
             sheet[f'A{i}'].fill = PatternFill(start_color=cores[id], fill_type='solid')
             sheet[f'B{i}'] = legendas[id]
-        sheet.append(['H-plantão','Plantão HomeOffice'])
-        sheet.append(['P-plantão','Plantão Presencial'])
         for i in range(2,6):
             sheet[f'A{i}'].border = Border(left=Side(style='thin'),right=None,top=Side(style='thin'),bottom=Side(style='thin'))
             sheet[f'B{i}'].border = Border(left=None,right=Side(style='thin'),top=Side(style='thin'),bottom=Side(style='thin'))
@@ -101,12 +100,12 @@ class Planilha:
                 h_plantao = [[plantao[0][0],plantao[1]] for plantao in plantoes if plantao[0][1] == linha.value and plantao[1] == 'H-Plantão']
                 
                 if folgas_:
-                    self._colorir_texto(linha,self.GREEN,'\n'.join(folgas_))
+                    self._colorir_texto(linha,InlineFont(color=self.GREEN),'\n'.join(folgas_))
                 if homeof:
-                    self._colorir_texto(linha,self.BLUE,'\n'.join(homeof))
+                    self._colorir_texto(linha,InlineFont(color=self.BLUE),'\n'.join(homeof))
                 if p_plantao:
-                    self._colorir_texto(linha,self.BLACK,' - '.join(p_plantao[0]))
+                    self._colorir_texto(linha,InlineFont(color=self.RED),' - '.join(p_plantao[0]))
                 if h_plantao:
-                    self._colorir_texto(linha,self.BLACK,' - '.join(h_plantao[0]))
+                    self._colorir_texto(linha,InlineFont(color=self.CARAMEL),' - '.join(h_plantao[0]))
 
         workbook.save(self.tabela)
